@@ -5,7 +5,7 @@ function  domString(products) {
   var productString = "";
 
   for(var i =0; i < products.length; i++) {
-
+    
     productString += '<section class="sectionOverall" id="productSection">';
     productString += '<h1 class="allH">' + products[i].name + '</h1>';
     productString += '<h2 class="allH">' + products[i].category_id + '</h2>';
@@ -25,24 +25,26 @@ function writeToDom(strang) {
 function selectString(categories) {
   var bigCategoryString = "";
 
-  for(var i = 0; i < categories.length; i++) {
+for(var j = 0; j < categories.length; j++) {
     var categoriesString = "";
-    categoriesString +=   `<option value=${categories[i].discount} id=${categories[i].id}>${categories[i].season_discount}</option>`;
+    
+    categoriesString +=   `<option value=${categories[j].discount} id=${categories[j].id}>${categories[j].season_discount}</option>`;
     bigCategoryString += categoriesString;
 }
   writeToDom2(bigCategoryString);
 }
 
+
 function writeToDom2(strang) {
   overallSelect.innerHTML += strang;
 }
 
+
+
 //EVENT LISTENER FUNCTION NEEDED HERE//
 
-overallSelect.addEventListener("change", function(e){
-  season_discount.value
-
-
+overallSelect.addEventListener("change", function(){
+  getDiscount();
 })
 
 
@@ -51,19 +53,24 @@ overallSelect.addEventListener("change", function(e){
 /// NEED TO FINISH EVENT LISTENER HERE//
 
 function getDiscount() {
+  var discountPrice = "";
   for(var i = 0; i < products.length; i++) {
     for(var j = 0; j < categories.length; j++){
       if (categories[j].season_discount === "Winter" && products[i].category_id === 1 ) {
-          var price = products[i].price * categories[j].discount
+          var discountPrice = products[i].price * categories[j].discount
       }
         else if (categories[j].season_discount === "Autumn" && products[i].category_id === 2 ) {
-          var price = products[i].price * categories[j].discount
-      } else if (categories[j].season_discount === "Spring" && products[i].category_id === 3 ) {
-          var price = products[i].price * categories[j].discount
+          var discountPrice = products[i].price * categories[j].discount
+      } 
+        else if (categories[j].season_discount === "Spring" && products[i].category_id === 3 ) {
+          var discountPrice = products[i].price * categories[j].discount
       }
-  console.log(price);
+     
+ 
 }
 }
+  console.log(discountPrice);
+   document.write(discountPrice);
 }
 
 // JSON STUFF TO GET IT //
