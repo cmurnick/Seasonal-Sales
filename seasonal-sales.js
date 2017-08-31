@@ -59,6 +59,7 @@ function combinedArray (productsArray, categoriesArray) {
 
 
 function domString (products) {
+  
   var discountSelection = document.getElementById("containerSelect").innerHTML;
   var productString = "";
   for(var i =0; i < products.length; i++) {
@@ -78,8 +79,8 @@ function domString (products) {
       }
         console.log(productString);
         writeToDom(productString);
-}
-    
+ };  
+};
 
 
 var overallList = document.getElementById("containerOverall");
@@ -91,6 +92,12 @@ function writeToDom(strang) {
 }
 
 
+containerSelect.addEventListener("change", function(e) {
+  // console.log(e);
+  //   domString(e);
+  //   // console.log(e);
+  //   // product[i].price = product[i].finalPrice;
+  // })
 
 
 
