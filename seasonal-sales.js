@@ -54,12 +54,41 @@ function combinedArray (productsArray, categoriesArray) {
 
    
   });
-   console.log(productsArray); 
+   domString(productsArray); 
   }
 
 
+function domString (products) {
+  var discountSelection = document.getElementById("containerSelect").innerHTML;
+  var productString = "";
+  for(var i =0; i < products.length; i++) {
+
+      productString += '<section class="sectionOverall" id="productSection">';
+      productString += '<h1 class="allH">' + products[i].name + '</h1>';
+      productString += '<h2 class="allH2">' + products[i].type + '</h2>';
 
 
+      if (discountSelection === products[i].season) {
+        productString += '<h2>' + products[i].finalPrice + '</h2>';
+        } else {
+        productString += '<h2>' + products[i].price + '</h2>';
+        }
+        
+      productString += '</section>'
+      }
+        console.log(productString);
+        writeToDom(productString);
+}
+    
+
+
+var overallList = document.getElementById("containerOverall");
+
+function writeToDom(strang) {
+  console.log("strang", strang);
+  overallList.innerHTML = strang;
+
+}
 
 
 
@@ -129,7 +158,7 @@ function combinedArray (productsArray, categoriesArray) {
 
 
 
-// var overallList = document.getElementById("containerOverall");
+
 // var overallSelect = document.getElementById("containerSelect");
 
 
