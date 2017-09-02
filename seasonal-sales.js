@@ -1,101 +1,272 @@
-var overallList = document.getElementById("containerOverall");
-var overallSelect = document.getElementById("containerSelect");
 
-function  domString(products) {
+
+
+
+
+
+
+
+
+function executeThisCodeAfterFileLoads(){
+  var productsData = JSON.parse(this.responseText);
+  getCategoriez(productsData.products);
+
+};
+
+function executeThisCodeIfFileErrors(){
+  console.log("Shit's broke");
+}
+
+var myProductz = new XMLHttpRequest();
+myProductz.addEventListener("load", executeThisCodeAfterFileLoads);
+myProductz.addEventListener("error", executeThisCodeIfFileErrors);
+myProductz.open("GET", "products.json");
+myProductz.send();
+
+
+function getCategoriez(productz) {
+  var myCategoriez = new XMLHttpRequest();
+  myCategoriez.addEventListener("load", executeThisCodeAfterFileLoads2);
+  myCategoriez.addEventListener("error", executeThisCodeIfFileErrors);
+  myCategoriez.open("GET", "categories.json");
+  myCategoriez.send();
+
+  function executeThisCodeAfterFileLoads2(){
+    var categoriesData = JSON.parse(this.responseText);
+    // console.log("combined Array", categoriesData.categories);
+    // console.log("JSON object", categoriesData);
+    combinedArray(productz, categoriesData.categories);
+  }
+}
+
+var product;
+
+function combinedArray (productsArray, categoriesArray) {
+  productsArray.forEach(function(product){
+    var currentCategoriesId = product["category_id"];
+
+    categoriesArray.forEach(function(category) {
+      if (currentCategoriesId === category.id) {
+          product["type"] = category.name;
+          product["season"] = category.season_discount;
+          product["discount"] = category.discount;
+          product["finalPrice"] = product.price - (product.price * product.discount);
+         }
+      });
+
+   
+  });
+   domString(productsArray); 
+   product = productsArray
+   console.log(product);
+  }
+
+
+function domString (products) {
+  
+  var discountSelection = document.getElementById("containerSelect").value;
   var productString = "";
-
   for(var i =0; i < products.length; i++) {
 
-    productString += '<section class="sectionOverall" id="productSection">';
-    productString += '<h1 class="allH">' + products[i].name + '</h1>';
-    productString += '<h2 class="allH">' + products[i].category_id + '</h2>';
-    productString += '<p class="allH">' + products[i].price + '</p>';
-    productString += '</section>';
+      productString += '<section class="sectionOverall" id="productSection">';
+      productString += '<h1 class="allH">' + products[i].name + '</h1>';
+      productString += '<h2 class="allH2">' + products[i].type + '</h2>';
 
-  }
-    writeToDom(productString);
-}
+
+      if (discountSelection === products[i].season) {
+        productString += '<h2>' + products[i].finalPrice.toFixed(2) + '</h2>';
+        } else {
+        productString += '<h2>' + products[i].price.toFixed(2) + '</h2>';
+        }
+        
+      productString += '</section>'
+      }
+        product = productString;
+        writeToDom(product);
+ };  
+
+
+
+var overallList = document.getElementById("containerOverall");
 
 function writeToDom(strang) {
-  overallList.innerHTML += strang;
+  // console.log("strang", strang);
+  overallList.innerHTML = strang;
+
 }
 
 
-
-function selectString(categories) {
-  var bigCategoryString = "";
-
-  for(var i = 0; i < categories.length; i++) {
-    var categoriesString = "";
-    categoriesString +=   `<option value=${categories[i].discount} id=${categories[i].id}>${categories[i].season_discount}</option>`;
-    bigCategoryString += categoriesString;
-}
-  writeToDom2(bigCategoryString);
-}
-
-function writeToDom2(strang) {
-  overallSelect.innerHTML += strang;
-}
-
-//EVENT LISTENER FUNCTION NEEDED HERE//
-
-overallSelect.addEventListener("change", function(e){
-  season_discount.value
-
-
-})
+containerSelect.addEventListener("change", function(e) {
+  console.log(product);
+    domString(product);
+   
+  //   // console.log(e);
+  //   // product[i].price = product[i].finalPrice;
+  })
 
 
 
 
-/// NEED TO FINISH EVENT LISTENER HERE//
 
-function getDiscount() {
-  for(var i = 0; i < products.length; i++) {
-    for(var j = 0; j < categories.length; j++){
-      if (categories[j].season_discount === "Winter" && products[i].category_id === 1 ) {
-          var price = products[i].price * categories[j].discount
-      }
-        else if (categories[j].season_discount === "Autumn" && products[i].category_id === 2 ) {
-          var price = products[i].price * categories[j].discount
-      } else if (categories[j].season_discount === "Spring" && products[i].category_id === 3 ) {
-          var price = products[i].price * categories[j].discount
-      }
-  console.log(price);
-}
-}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------//
+
 
 // JSON STUFF TO GET IT //
 
-var products = [];
-var categories = [];
+// var product = [];
+// var category = [];
 
-function executeThisCodeAfterFileLoads (){
-  // console.log("this", this.responseText);
-  var data = JSON.parse(this.responseText);
-  domString(data.products);
+// function executeThisCodeAfterFileLoads (){
+//   var data = JSON.parse(this.responseText);
+//   product = data.products;
+//   for (var i = 0; i < product.length; i++) {
+//     product[i].displayPrice = product[i].price;
+//   }
+//   domString(product);
+  
 
-}
+// }
 
-function executeThisCodeAfterFileLoads2 (){
-  // console.log("this", this.responseText);
-  var data = JSON.parse(this.responseText);
-  selectString(data.categories);
+// function executeThisCodeAfterFileLoads2 (){
+//   var data = JSON.parse(this.responseText);
+//  category = data.categories;
+//   selectString(category);
+//   console.log(category);
 
-}
+// }
 
-var myRequest = new XMLHttpRequest();
-myRequest.addEventListener("load", executeThisCodeAfterFileLoads);
-myRequest.open("GET", "products.json");
-myRequest.send();
+// var myRequest2 = new XMLHttpRequest();
+// myRequest2.addEventListener("load", executeThisCodeAfterFileLoads2);
+// myRequest2.open("GET", "categories.json");
+// myRequest2.send();
 
-var myRequest2 = new XMLHttpRequest();
-myRequest2.addEventListener("load", executeThisCodeAfterFileLoads2);
-myRequest2.open("GET", "categories.json");
-myRequest2.send();
+// var myRequest = new XMLHttpRequest();
+// myRequest.addEventListener("load", executeThisCodeAfterFileLoads);
+// myRequest.open("GET", "products.json");
+// myRequest.send();
 
 
 
+
+
+// var overallSelect = document.getElementById("containerSelect");
+
+
+// function  domString(products) {
+//   var productString = "";
+// console.log(product);
+// console.log(category);
+//   for(var i =0; i < products.length; i++) {
+
+//      productString += '<section class="sectionOverall" id="productSection">';
+//       productString += '<h1 class="allH">' + products[i].name + '</h1>';
+
+//     for(var j = 0; j < category.length; j++) {
+
+  
+//       if (products[i].category_id === category[j].id) {
+//         console.log(products[i].category_id, category[j].id);
+//         //fix so it doesn't rename
+//           products[i].category_id = category[j].name;
+//         console.log(products[i].category_id, category[j].name);
+//         productString += '<h2>' + products[i].category_id + '</h2>';
+//       }
+      
+//   }
+//  productString += '<p class="allH">' + products[i].displayPrice + '</p>';
+//       productString += '</section>';
+//       // console.log(productString);
+//         writeToDom(productString);
+// }
+    
+// }
+
+
+
+// function writeToDom(strang) {
+//   overallList.innerHTML = strang;
+// }
+
+
+
+// function selectString(categories) {
+//   var bigCategoryString = "";
+
+// for(var j = 0; j < categories.length; j++) {
+//     var categoriesString = "";
+    
+//     categoriesString +=   `"<option value=${categories[j].id} id=${categories[j].id}>${categories[j].season_discount}</option>"`;
+//     bigCategoryString += categoriesString;
+// }
+//   writeToDom2(bigCategoryString);
+// }
+
+
+// function writeToDom2(strang) {
+//   overallSelect.innerHTML += strang;
+// }
+
+
+
+// //EVENT LISTENER FUNCTION NEEDED HERE//
+
+// overallSelect.addEventListener("change", function(e){
+//   getDiscount(e.target.value);
+
+// })
+
+
+
+
+// /// NEED TO FINISH EVENT LISTENER HERE//
+
+// function getDiscount(categoryId) {
+//   var discountPrice = "";
+//   var discount = 0;
+//   for(var i = 0; i < category.length; i++) {
+ 
+//     // getting discount of correct category
+
+//   }
+
+//   for(var i = 0; i < product.length; i++) {
+//     products[i].displayPrice = products[i].price;
+//       if (product[i].category_id.toString() == categoryId) {
+          
+//           var discountPrice = product[i].price * discount;
+//           product[i].displayPrice = discountPrice;
+//       }
+        
+
+// }
+//   console.log(discountPrice);
+//    domString(product);
+// }
+
+
+
+// // domString();
 
 
