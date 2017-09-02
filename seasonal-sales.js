@@ -33,11 +33,13 @@ function getCategoriez(productz) {
 
   function executeThisCodeAfterFileLoads2(){
     var categoriesData = JSON.parse(this.responseText);
-    console.log("combined Array", categoriesData.categories);
-    console.log("JSON object", categoriesData);
+    // console.log("combined Array", categoriesData.categories);
+    // console.log("JSON object", categoriesData);
     combinedArray(productz, categoriesData.categories);
   }
 }
+
+var product;
 
 function combinedArray (productsArray, categoriesArray) {
   productsArray.forEach(function(product){
@@ -55,12 +57,14 @@ function combinedArray (productsArray, categoriesArray) {
    
   });
    domString(productsArray); 
+   product = productsArray
+   console.log(product);
   }
 
 
 function domString (products) {
   
-  var discountSelection = document.getElementById("containerSelect").innerHTML;
+  var discountSelection = document.getElementById("containerSelect").value;
   var productString = "";
   for(var i =0; i < products.length; i++) {
 
@@ -70,34 +74,35 @@ function domString (products) {
 
 
       if (discountSelection === products[i].season) {
-        productString += '<h2>' + products[i].finalPrice + '</h2>';
+        productString += '<h2>' + products[i].finalPrice.toFixed(2) + '</h2>';
         } else {
-        productString += '<h2>' + products[i].price + '</h2>';
+        productString += '<h2>' + products[i].price.toFixed(2) + '</h2>';
         }
         
       productString += '</section>'
       }
-        console.log(productString);
-        writeToDom(productString);
+        product = productString;
+        writeToDom(product);
  };  
-};
+
 
 
 var overallList = document.getElementById("containerOverall");
 
 function writeToDom(strang) {
-  console.log("strang", strang);
+  // console.log("strang", strang);
   overallList.innerHTML = strang;
 
 }
 
 
 containerSelect.addEventListener("change", function(e) {
-  // console.log(e);
-  //   domString(e);
+  console.log(product);
+    domString(product);
+   
   //   // console.log(e);
   //   // product[i].price = product[i].finalPrice;
-  // })
+  })
 
 
 
